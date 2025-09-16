@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Message Loop Test</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhLGsKbWPgX_PuL9Z6SUL4wtIPVZSAl8U",
+      authDomain: "compressorapp.firebaseapp.com",
+      projectId: "compressorapp",
+      storageBucket: "compressorapp.firebasestorage.app",
+      messagingSenderId: "68592919429",
+      appId: "1:68592919429:web:7c9d0308cafd06032f1aec",
+      measurementId: "G-BPJ9K0P761"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const sendBtn = document.getElementById("sendBtn");
+    const inboxDiv = document.getElementById("inbox");
+
+    sendBtn.addEventListener("click", () => {
+      const to = document.getElementById("toUser").value;
+      const from = document.getElementById("fromUser").value;
+      const text = document.getElementById("msgText").value;
+      push(ref(db, "messages"), { to, from, text });
+      document.getElementById("msgText").value = "";
+    });
+
+    function checkInbox(user) {
+      onValue(ref(db, "messages"), snapshot => {
+        const all = snapshot.val();
+        const inbox = Object.values(all || {}).filter(msg => msg.to === user);
+        inboxDiv.innerHTML = inbox.map(msg =>
+          `<p><strong>${msg.from}:</strong> ${msg.text}</p>`
+        ).join("");
+      });
+    }
+
+    // Auto-check inbox for "rick"
+    checkInbox("rick");
+  </script>
+</head>
+<body>
+  <h2>Send a Message</h2>
+  <input type="text" id="fromUser" placeholder="From" />
+  <input type="text" id="toUser" placeholder="To" />
+  <input type="text" id="msgText" placeholder="Message" />
+  <button id="sendBtn">Send</button>
+
+  <h2>Inbox for Rick</h2>
+  <div id="inbox"></div>
+</body>
+</html>
