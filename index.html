@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script type="module">
+  import { sendMessage, checkInbox } from './firebase-messaging.js';
+
+  // Example usage:
+  document.getElementById("compressBtn").addEventListener("click", () => {
+    const input = document.getElementById("inputBox").value;
+    const compressed = compress(input); // your existing logic
+    sendMessage("rick", "user1", compressed);
+  });
+
+  checkInbox("rick", inbox => {
+    console.log("Inbox:", inbox);
+    // You can display these messages in the UI
+  });
+</script>
   <title>Rick's Compressor</title>
   <style>
     body {
@@ -45,4 +60,5 @@ def compress_word(word):
 
   <script src="script.js"></script>
 </body>
+
 </html>
