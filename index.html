@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rick's Compressor</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    input, button {
+      font-size: 1em;
+      padding: 8px;
+      margin: 10px 0;
+    }
+    pre {
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rick's Compressor</h1>
+
+  <p>Type a word below to compress it using enum-based logic:</p>
+  <input type="text" id="textInput" placeholder="Type something..." />
+  <button id="compressBtn">Compress</button>
+
+  <h2>Compressed Output:</h2>
+  <pre id="output"></pre>
+
+  <h2>Reference Python Logic:</h2>
+  <pre id="code">
+def compress_word(word):
+    result = []
+    for char in word:
+        if char.isalpha():
+            index = ord(char.lower()) - ord('a')
+            flag = '01' if char.isupper() else '00'
+            result.append({'index': index, 'flag': flag})
+    return result
+  </pre>
+
+  <script src="script.js"></script>
+</body>
+</html>
